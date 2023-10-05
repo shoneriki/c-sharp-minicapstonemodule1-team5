@@ -19,6 +19,7 @@ namespace Capstone
         public void Run()
         {
             bool isRunning = true;
+            Cashier cashier = new Cashier();
             while (isRunning)
             { 
                 Console.WriteLine("(1) Display Vending Machine Items\n(2) Purchase\n(3) Exit\n");
@@ -33,21 +34,22 @@ namespace Capstone
                 {
                     while (true)
                     {
-                    Cashier cashier = new Cashier();
                     Console.WriteLine($"Current Money Provided: {cashier.Balance} \n\n (1) Feed Money \n (2) Select Product \n (3) Finish Transaction");
                     int nextInput = int.Parse(Console.ReadLine());
                     int moneyInserted;
                         if (nextInput == 1)
                         {
                             Console.WriteLine("Enter in whole dollar amount or enter 0 to return to main menu");
-                            moneyInserted = int.Parse(Console.ReadLine());
+                            string hold = Console.ReadLine();
+                            moneyInserted = int.Parse(hold);
                             cashier.TakeMoney(cashier, moneyInserted);
                         }
                         else if (nextInput == 2)
                         {
                             DisplayItems();
+                            Console.WriteLine();
                             Console.WriteLine("Please enter a code to select an item");
-                            string codeInput = Console.ReadLine().ToLower();
+                            string codeInput = Console.ReadLine();
                             bool itemIsFound = false;
                             int selectedItemCount = 0;
                             decimal selectedItemPrice = 0;
@@ -80,6 +82,10 @@ namespace Capstone
                         }
 
                     }
+                }
+                else if (input == 3)
+                {
+                    isRunning = false;
                 }
 
             }
