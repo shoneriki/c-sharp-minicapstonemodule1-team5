@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Capstone.Plush
 {
-    public class Pony : Plush
+    public class Pony : Plushy
     {
-        public Pony(string name, decimal price, string displayMessage) : base(name, price, displayMessage) { }
+        public Pony(string name, decimal price, string location, int count) : base(name, price,  location, count) 
+        {
+            DisplayMessage = "Neigh, Neigh, Yay!";
+        }
     }
 }
