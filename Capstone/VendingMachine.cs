@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Capstone
 {
@@ -30,35 +31,54 @@ namespace Capstone
                 }
                 else if (input == 2)
                 {
-                    // TODO: selecting an object for purchase
+                    while (true)
+                    {
                     Cashier cashier = new Cashier();
                     Console.WriteLine($"Current Money Provided: {cashier.Balance} \n\n (1) Feed Money \n (2) Select Product \n (3) Finish Transaction");
                     int nextInput = int.Parse(Console.ReadLine());
                     int moneyInserted;
-                    if (nextInput == 1)
-                    {
-                        Console.WriteLine("Enter in whole dollar amount or enter 0 to return to main menu");
-                        moneyInserted = int.Parse(Console.ReadLine());
-                        cashier.TakeMoney(moneyInserted);
-                    }
-                    else if (nextInput == 2)
-                    {
-                        DisplayItems();
-                        Console.WriteLine("Please enter a code to select an item");
-                        string codeInput = Console.ReadLine().ToLower();
-                        bool itemIsFound = false;
-                        for (int i = 0; i < Inv.Count; i++)
+                        if (nextInput == 1)
                         {
-                            if (codeInput == Inv[i].Location)
+                            Console.WriteLine("Enter in whole dollar amount or enter 0 to return to main menu");
+                            moneyInserted = int.Parse(Console.ReadLine());
+                            cashier.TakeMoney(cashier, moneyInserted);
+                        }
+                        else if (nextInput == 2)
+                        {
+                            DisplayItems();
+                            Console.WriteLine("Please enter a code to select an item");
+                            string codeInput = Console.ReadLine().ToLower();
+                            bool itemIsFound = false;
+                            int selectedItemCount = 0;
+                            decimal selectedItemPrice = 0;
+                            for (int i = 0; i < Inv.Count; i++)
                             {
-                                itemIsFound = true;
+                                if (codeInput == Inv[i].Location)
+                                {
+                                    itemIsFound = true;
+                                    selectedItemCount = Inv[i].Count;
+                                    selectedItemPrice = Inv[i].Price;
+                                }
+                            }
+                            if (itemIsFound && selectedItemCount == 0)
+                            {
+                                Console.WriteLine("SOLD OUT!");
+                            }
+                            else if (!itemIsFound)
+                            {
+                                Console.WriteLine("Item was not found at this location");
+                            }
+                            else
+                            {
+                                cashier.Transaction(selectedItemPrice, codeInput);
                             }
                         }
-
-                        if (!itemIsFound)
+                        else if (nextInput == 3)
                         {
-                            Console.WriteLine("Code was not found.");
+                            cashier.EndTransaction();
+                            break;
                         }
+
                     }
                 }
 

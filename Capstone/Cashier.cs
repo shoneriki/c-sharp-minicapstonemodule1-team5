@@ -8,11 +8,11 @@ namespace Capstone
 
 
 
-        public void TakeMoney(int moneyGiven)
+        public void TakeMoney(Cashier cashier, int moneyGiven)
         {
             if (moneyGiven > 0)
             {
-                Balance += moneyGiven;
+                cashier.Balance += moneyGiven;
             }
             else if (moneyGiven == 0)
             {
@@ -24,13 +24,13 @@ namespace Capstone
                 Console.ReadKey();
             }
         }
-        public void Transaction(decimal price)
+        public void Transaction(decimal price, string codeInput)
         {
             if (Balance >= price)
             {
                 Balance -= price;
                 VendingMachine vendingMachine = new VendingMachine();
-                vendingMachine.Dispense();
+                vendingMachine.Dispense(codeInput);
             }
             else
             {
