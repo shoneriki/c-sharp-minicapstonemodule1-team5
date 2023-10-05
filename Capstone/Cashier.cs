@@ -62,7 +62,6 @@ namespace Capstone
             }
 
             Console.WriteLine($"Transaction Complete, your change is: {total} \n Quarters: {quarters} \n Dimes: {dimes} \n Nickels: {nickels}");
-            Console.ReadKey();
         }
     }
 }

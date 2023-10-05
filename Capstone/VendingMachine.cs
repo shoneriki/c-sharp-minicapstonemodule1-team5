@@ -23,15 +23,17 @@ namespace Capstone
             while (isRunning)
             { 
                 Console.WriteLine("(1) Display Vending Machine Items\n(2) Purchase\n(3) Exit\n");
+                // TODO: Try Catch following:
                 int input =  int.Parse(Console.ReadLine());
 
                 if (input == 1)
                 {
-                    Console.Clear();
                     DisplayItems();
+                    Console.WriteLine();
                 }
                 else if (input == 2)
                 {
+                    Console.Clear();
                     while (true)
                     {
                     Console.WriteLine($"Current Money Provided: {cashier.Balance} \n\n (1) Feed Money \n (2) Select Product \n (3) Finish Transaction");
@@ -43,6 +45,7 @@ namespace Capstone
                             string hold = Console.ReadLine();
                             moneyInserted = int.Parse(hold);
                             cashier.TakeMoney(cashier, moneyInserted);
+                            Console.Clear();
                         }
                         else if (nextInput == 2)
                         {
@@ -65,19 +68,34 @@ namespace Capstone
                             if (itemIsFound && selectedItemCount == 0)
                             {
                                 Console.WriteLine("SOLD OUT!");
+                                Console.WriteLine("Press any key to continue...");
+                                Console.ReadKey();
+                                Console.Clear();
                             }
                             else if (!itemIsFound)
                             {
                                 Console.WriteLine("Item was not found at this location");
+                                Console.WriteLine("Press any key to continue...");
+                                Console.ReadKey();
+                                Console.Clear();
                             }
                             else
                             {
                                 cashier.Transaction(selectedItemPrice, codeInput);
+                                Console.WriteLine();
+                                Console.WriteLine("Press any key to continue...");
+                                Console.ReadKey();
+                                Console.Clear();
                             }
                         }
                         else if (nextInput == 3)
                         {
+                            Console.Clear();
                             cashier.EndTransaction();
+                            Console.WriteLine();
+                            Console.WriteLine("Press any key to continue...");
+                            Console.ReadKey();
+                            Console.Clear();
                             break;
                         }
 
@@ -93,6 +111,7 @@ namespace Capstone
 
         public void DisplayItems()
         {
+            Console.Clear();
             for (int i = 0; i < Inv.Count; i++)
             {
                 if (Inv[i].Count == 0)
