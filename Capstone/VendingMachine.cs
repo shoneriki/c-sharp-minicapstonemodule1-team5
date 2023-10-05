@@ -1,6 +1,7 @@
 ﻿using Capstone.Plush;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -55,6 +56,7 @@ namespace Capstone
                             string codeInput = Console.ReadLine();
                             bool itemIsFound = false;
                             int selectedItemCount = 0;
+                            string selectedItemName = "";
                             decimal selectedItemPrice = 0;
                             for (int i = 0; i < Inv.Count; i++)
                             {
@@ -63,6 +65,7 @@ namespace Capstone
                                     itemIsFound = true;
                                     selectedItemCount = Inv[i].Count;
                                     selectedItemPrice = Inv[i].Price;
+                                    selectedItemName = Inv[i].Name;
                                 }
                             }
                             if (itemIsFound && selectedItemCount == 0)
@@ -82,6 +85,7 @@ namespace Capstone
                             else
                             {
                                 cashier.Transaction(selectedItemPrice, codeInput);
+                                LogPurchase(cashier.Balance, codeInput, selectedItemName, selectedItemPrice);
                                 Console.WriteLine();
                                 Console.WriteLine("Press any key to continue...");
                                 Console.ReadKey();
@@ -131,6 +135,16 @@ namespace Capstone
                     Console.WriteLine($"{Inv[i].DisplayMessage}");
                     Inv[i].Count--;
                 }
+            }
+        }
+
+        public void LogPurchase(decimal totalBalance, string codeInput, string selectedName, decimal price)
+        {
+
+            using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
+            {
+                writer.WriteLine($"{DateTime.Now} {selectedName} {codeInput} ${price} ${totalBalance}");
+                // 01/01/2019 12:00:20 PM Emperor Penguin B4 $1.75 $8.25 
             }
         }
 

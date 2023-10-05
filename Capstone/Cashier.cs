@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace Capstone
 {
@@ -13,6 +15,10 @@ namespace Capstone
             if (moneyGiven > 0)
             {
                 cashier.Balance += moneyGiven;
+                using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
+                {
+                    writer.WriteLine($"{DateTime.Now} FEED MONEY: ${moneyGiven} ${cashier.Balance} ");
+                }
             }
             else if (moneyGiven == 0)
             {
@@ -62,6 +68,11 @@ namespace Capstone
             }
 
             Console.WriteLine($"Transaction Complete, your change is: {total} \n Quarters: {quarters} \n Dimes: {dimes} \n Nickels: {nickels}");
+
+            using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
+            {
+                writer.WriteLine($"{DateTime.Now} GIVE CHANGE: ${total} ${Balance} ");
+            }
         }
     }
 }
