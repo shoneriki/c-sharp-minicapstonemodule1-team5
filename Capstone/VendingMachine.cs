@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Capstone.Plush;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +13,10 @@ namespace Capstone
 {
     public class VendingMachine
     {
-        public Dictionary<Plush, Dictionary<string, int>> Inventory { get; set; } = new Dictionary<Plush, Dictionary<string, int>>();
+        public List<Plushy> Inv { get { return Inventory.SetInventory(); } private set { } }
+
+
+
 
 
         //using (StreamReader fileInput = new StreamReader(filePath))

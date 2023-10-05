@@ -11,10 +11,11 @@ namespace Capstone
     public static class Inventory
     { 
 
-        public static string SetInventory()
+        public static List<Plushy> SetInventory()
         {
             using (StreamReader reader = new StreamReader("../../../../vendingmachine.csv"))
             {
+                List<Plushy> result = new List<Plushy>();
                 while (!reader.EndOfStream)
                 {
                     string lineOfText = reader.ReadLine();
@@ -27,24 +28,29 @@ namespace Capstone
                     switch (type)
                     {
                         case "Duck":
-                            string duckName = $"Duck {duckCounter}";
-                            Duck duckName. = new Duck(type, decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            Duck duck = new Duck(splitLine[1], decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            result.Add(duck);
                             break;
                         case "Penguin":
-                            Penguin penguin = new Penguin(type, decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            Penguin penguin = new Penguin(splitLine[1], decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            result.Add(penguin);
                             break;
                         case "Cat":
-                            Cat cat = new Cat(type, decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            Cat cat = new Cat(splitLine[1], decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            result.Add(cat);
                             break;
                         case "Pony":
-                            Pony pony = new Pony(type, decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            Pony pony = new Pony(splitLine[1], decimal.Parse(splitLine[2]), splitLine[0], 5);
+                            result.Add(pony);
                             break;
-                            //public Plushy(string name, decimal price, string location, int count)
-
                     }
                 }
+                return result;
             }
-            return "";
         }
+        //public List<Plushy> UpdateInventory(List<Plushy> inventory)
+        //{
+
+        //}
     }
 }
