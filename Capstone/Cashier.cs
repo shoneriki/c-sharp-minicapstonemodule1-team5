@@ -14,6 +14,10 @@ namespace Capstone
             {
                 Balance += moneyGiven;
             }
+            else if (moneyGiven == 0)
+            {
+                Console.Clear();
+            }
             else
             {
                 Console.WriteLine("Please enter in a valid whole dollar amount");
@@ -25,6 +29,8 @@ namespace Capstone
             if (Balance >= price)
             {
                 Balance -= price;
+                VendingMachine vendingMachine = new VendingMachine();
+                vendingMachine.Dispense();
             }
             else
             {
@@ -55,7 +61,7 @@ namespace Capstone
                 nickels++;
             }
 
-            Console.WriteLine($"Transaction Complete, your change is: {total} /n Quarters: {quarters} /n Dimes: {dimes} /n Nickels: {nickels}");
+            Console.WriteLine($"Transaction Complete, your change is: {total} \n Quarters: {quarters} \n Dimes: {dimes} \n Nickels: {nickels}");
             Console.ReadKey();
         }
     }
