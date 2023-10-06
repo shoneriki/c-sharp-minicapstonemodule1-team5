@@ -1,0 +1,6 @@
+Yellow Duck|2
+Rockhopper Penguin|1
+Tabby Cat|1
+Unicorn Pony|1
+
+TOTAL Sales $7.75

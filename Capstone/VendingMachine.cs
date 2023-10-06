@@ -128,6 +128,10 @@ namespace Capstone
                                     Console.Clear();
                                     break;
                                 }
+                                else
+                                {
+                                    Console.Clear();
+                                }
                             }
 
                         }
@@ -135,6 +139,14 @@ namespace Capstone
                     else if (input == 3)
                     {
                         isRunning = false;
+                    }
+                    else if (input == 4)
+                    {
+                        SalesReport();
+                    }
+                    else
+                    {
+                        Console.Clear();
                     }
                 }
 
@@ -180,5 +192,32 @@ namespace Capstone
             }
         }
 
+        public void SalesReport()
+        {
+            string time = SalesReportTime();
+
+            using var writer = new StreamWriter($"../../../../SalesReport{time}.txt", false);
+            decimal total = 0M;
+
+            foreach (Plushy plush in Inv)
+            {
+                if (plush.Count < 5)
+                {
+                    writer.WriteLine($"{plush.Name}|{5 - plush.Count}");
+                    total += plush.Price * (5 - plush.Count);
+                }
+            }
+            writer.WriteLine();
+            writer.WriteLine($"TOTAL Sales ${total}");
+        }
+
+        public string SalesReportTime()
+        {
+            
+            DateTime time = DateTime.Now;
+            string result = $"{time.Year}-{time.Month}-{time.Day}_{time.Hour}_{time.Minute}_{time.Second}";
+
+            return result;
+        }
     }
 }
