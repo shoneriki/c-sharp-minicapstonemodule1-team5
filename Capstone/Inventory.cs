@@ -18,10 +18,6 @@ namespace Capstone
                     string lineOfText = reader.ReadLine();
                     string[] splitLine = lineOfText.Split("|");
                     string type = splitLine[3];
-                    int duckCounter = 0;
-                    int penguinCounter = 0;
-                    int catCounter = 0;
-                    int ponyCounter = 0;
                     switch (type)
                     {
                         case "Duck":
@@ -45,9 +41,5 @@ namespace Capstone
                 return result;
             }
         }
-        //public List<Plushy> UpdateInventory(List<Plushy> inventory)
-        //{
-
-        //}
     }
 }

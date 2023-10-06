@@ -20,7 +20,7 @@ namespace Capstone
         public void Run()
         {
             bool isRunning = true;
-            Cashier cashier = new Cashier();
+            var cashier = new Cashier();
             while (isRunning)
             { 
                 Console.WriteLine("(1) Display Vending Machine Items\n(2) Purchase\n(3) Exit\n");
@@ -185,11 +185,10 @@ namespace Capstone
         public void LogPurchase(decimal totalBalance, string codeInput, string selectedName, decimal price)
         {
 
-            using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
-            {
-                writer.WriteLine($"{DateTime.Now} {selectedName} {codeInput} ${price} ${totalBalance}");
-                // 01/01/2019 12:00:20 PM Emperor Penguin B4 $1.75 $8.25 
-            }
+            using StreamWriter writer = new StreamWriter("../../../../Log.txt", true);
+            writer.WriteLine($"{DateTime.Now} {selectedName} {codeInput} ${price} ${totalBalance}");
+            // Log Format:
+            // 01/01/2019 12:00:20 PM Emperor Penguin B4 $1.75 $8.25 
         }
 
         public void SalesReport()

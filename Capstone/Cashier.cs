@@ -15,10 +15,8 @@ namespace Capstone
             if (moneyGiven > 0)
             {
                 Balance += moneyGiven;
-                using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
-                {
-                    writer.WriteLine($"{DateTime.Now} FEED MONEY: ${moneyGiven} ${Balance} ");
-                }
+                using var writer = new StreamWriter("../../../../Log.txt", true);
+                writer.WriteLine($"{DateTime.Now} FEED MONEY: ${moneyGiven} ${Balance} ");
             }
             else if (moneyGiven == 0)
             {
@@ -37,8 +35,6 @@ namespace Capstone
             {
                 Balance -= price;
                 return true;
-                //VendingMachine vendingMachine = new VendingMachine();
-                //vendingMachine.Dispense(codeInput);
             }
             else
             {
@@ -53,7 +49,6 @@ namespace Capstone
             string change = GetChange();
             string[] splitForChange = change.Split(" ");
 
-
             Console.WriteLine($"Transaction Complete, your change is: {total} \n Quarters: {splitForChange[0]} \n Dimes: {splitForChange[1]} \n Nickels: {splitForChange[2]}");
 
             using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
@@ -63,7 +58,6 @@ namespace Capstone
         }
         public string GetChange()
         {
-            string result = "";
             int quarters = 0;
             int dimes = 0;
             int nickels = 0;
@@ -84,8 +78,7 @@ namespace Capstone
                 nickels++;
             }
 
-            result = $"{quarters} {dimes} {nickels}";
-
+            string result = $"{quarters} {dimes} {nickels}";
             return result;
         }
     }
