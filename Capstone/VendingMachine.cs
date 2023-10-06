@@ -207,7 +207,7 @@ namespace Capstone
                 }
             }
             writer.WriteLine();
-            writer.WriteLine($"TOTAL Sales ${total}");
+            writer.WriteLine($"TOTAL SALES ${total}");
         }
 
         public string SalesReportTime()
