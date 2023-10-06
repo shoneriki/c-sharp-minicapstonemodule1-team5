@@ -24,92 +24,120 @@ namespace Capstone
             while (isRunning)
             { 
                 Console.WriteLine("(1) Display Vending Machine Items\n(2) Purchase\n(3) Exit\n");
-                // TODO: Try Catch following:
-                int input =  int.Parse(Console.ReadLine());
+                bool canParse = int.TryParse(Console.ReadLine(), out int input);
 
-                if (input == 1)
-                {
-                    DisplayItems();
-                    Console.WriteLine();
-                }
-                else if (input == 2)
+                if (!canParse)
                 {
                     Console.Clear();
-                    while (true)
+                    continue;
+                }
+                else 
+                { 
+                    if (input == 1)
                     {
-                    Console.WriteLine($"Current Money Provided: {cashier.Balance} \n\n (1) Feed Money \n (2) Select Product \n (3) Finish Transaction");
-                    int nextInput = int.Parse(Console.ReadLine());
-                    int moneyInserted;
-                        if (nextInput == 1)
+                        DisplayItems();
+                        Console.WriteLine();
+                    }
+                    else if (input == 2)
+                    {
+                        Console.Clear();
+                        while (true)
                         {
-                            Console.WriteLine("Enter in whole dollar amount or enter 0 to return to main menu");
-                            string hold = Console.ReadLine();
-                            moneyInserted = int.Parse(hold);
-                            cashier.TakeMoney(cashier, moneyInserted);
-                            Console.Clear();
-                        }
-                        else if (nextInput == 2)
-                        {
-                            DisplayItems();
-                            Console.WriteLine();
-                            Console.WriteLine("Please enter a code to select an item");
-                            string codeInput = Console.ReadLine();
-                            bool itemIsFound = false;
-                            int selectedItemCount = 0;
-                            string selectedItemName = "";
-                            decimal selectedItemPrice = 0;
-                            for (int i = 0; i < Inv.Count; i++)
+                            Console.WriteLine($"Current Money Provided: {cashier.Balance} \n\n (1) Feed Money \n (2) Select Product \n (3) Finish Transaction");
+                            bool canParse2 = int.TryParse(Console.ReadLine(), out int nextInput);
+                            if (!canParse2)
                             {
-                                if (codeInput == Inv[i].Location)
+                                Console.Clear();
+                                continue;
+                            }
+                            else                             
+                            { 
+                            
+                                int moneyInserted;
+                                if (nextInput == 1)
                                 {
-                                    itemIsFound = true;
-                                    selectedItemCount = Inv[i].Count;
-                                    selectedItemPrice = Inv[i].Price;
-                                    selectedItemName = Inv[i].Name;
+                                    Console.WriteLine("Enter in whole dollar amount or enter 0 to return to main menu");
+                                    string hold = Console.ReadLine();
+                                    bool canParse3 = int.TryParse(hold, out moneyInserted);
+                                    if (!canParse3)
+                                    {
+                                        Console.Clear();
+                                        continue;
+                                    }
+                                    else 
+                                    { 
+                                        cashier.TakeMoney(moneyInserted);
+                                        Console.Clear();
+                                    }
+                                }
+                                else if (nextInput == 2)
+                                {
+                                    DisplayItems();
+                                    Console.WriteLine();
+                                    Console.WriteLine("Please enter a code to select an item");
+                                    string codeInput = Console.ReadLine();
+                                    bool itemIsFound = false;
+                                    int selectedItemCount = 0;
+                                    string selectedItemName = "";
+                                    decimal selectedItemPrice = 0;
+                                    for (int i = 0; i < Inv.Count; i++)
+                                    {
+                                        if (codeInput == Inv[i].Location)
+                                        {
+                                            itemIsFound = true;
+                                            selectedItemCount = Inv[i].Count;
+                                            selectedItemPrice = Inv[i].Price;
+                                            selectedItemName = Inv[i].Name;
+                                        }
+                                    }
+                                    if (itemIsFound && selectedItemCount == 0)
+                                    {
+                                        Console.WriteLine("SOLD OUT!");
+                                        Console.WriteLine("Press any key to continue...");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                    }
+                                    else if (!itemIsFound)
+                                    {
+                                        Console.WriteLine("Item was not found at this location");
+                                        Console.WriteLine("Press any key to continue...");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                    }
+                                    else
+                                    {
+                                        bool canDispense = cashier.Transaction(selectedItemPrice, codeInput);
+                                        if (canDispense)
+                                        { 
+                                            Dispense(codeInput);
+                                            LogPurchase(cashier.Balance, codeInput, selectedItemName, selectedItemPrice);
+                                        }
+                                        Console.WriteLine();
+                                        Console.WriteLine("Press any key to continue...");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                    }
+                                }
+                                else if (nextInput == 3)
+                                {
+                                    Console.Clear();
+                                    cashier.EndTransaction();
+                                    Console.WriteLine();
+                                    Console.WriteLine("Press any key to continue...");
+                                    Console.ReadKey();
+                                    Console.Clear();
+                                    break;
                                 }
                             }
-                            if (itemIsFound && selectedItemCount == 0)
-                            {
-                                Console.WriteLine("SOLD OUT!");
-                                Console.WriteLine("Press any key to continue...");
-                                Console.ReadKey();
-                                Console.Clear();
-                            }
-                            else if (!itemIsFound)
-                            {
-                                Console.WriteLine("Item was not found at this location");
-                                Console.WriteLine("Press any key to continue...");
-                                Console.ReadKey();
-                                Console.Clear();
-                            }
-                            else
-                            {
-                                cashier.Transaction(selectedItemPrice, codeInput);
-                                Dispense(codeInput);
-                                LogPurchase(cashier.Balance, codeInput, selectedItemName, selectedItemPrice);
-                                Console.WriteLine();
-                                Console.WriteLine("Press any key to continue...");
-                                Console.ReadKey();
-                                Console.Clear();
-                            }
-                        }
-                        else if (nextInput == 3)
-                        {
-                            Console.Clear();
-                            cashier.EndTransaction();
-                            Console.WriteLine();
-                            Console.WriteLine("Press any key to continue...");
-                            Console.ReadKey();
-                            Console.Clear();
-                            break;
-                        }
 
+                        }
+                    }
+                    else if (input == 3)
+                    {
+                        isRunning = false;
                     }
                 }
-                else if (input == 3)
-                {
-                    isRunning = false;
-                }
+
 
             }
         }
@@ -123,7 +151,10 @@ namespace Capstone
                 {
                     Console.WriteLine($"{Inv[i].Location}| {Inv[i].Name}| {Inv[i].Price}| SOLD OUT!");
                 }
-                Console.WriteLine($"{Inv[i].Location}| {Inv[i].Name}| {Inv[i].Price}| {Inv[i].Count}");
+                else 
+                { 
+                    Console.WriteLine($"{Inv[i].Location}| {Inv[i].Name}| {Inv[i].Price}| {Inv[i].Count}");
+                }
             }
         }
 
@@ -134,9 +165,7 @@ namespace Capstone
                 if (codeInput == Inv[i].Location)
                 {
                     Console.WriteLine($"{Inv[i].DisplayMessage}");
-                    Console.WriteLine(Inv[i].Count);
                     Inv[i].Count--;
-                    Console.WriteLine(Inv[i].Count);
                 }
             }
         }

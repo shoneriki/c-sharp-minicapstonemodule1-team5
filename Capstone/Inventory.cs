@@ -10,7 +10,6 @@ namespace Capstone
 
         public static List<Plushy> SetInventory()
         {
-            Console.WriteLine("SetInventory is being used");
             using (StreamReader reader = new StreamReader("../../../../vendingmachine.csv"))
             {
                 List<Plushy> result = new List<Plushy>();

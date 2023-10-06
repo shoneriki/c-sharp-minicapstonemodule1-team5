@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection.PortableExecutable;
+using System.Threading;
 
 namespace Capstone
 {
@@ -8,48 +10,63 @@ namespace Capstone
     {
         public decimal Balance { get; private set; }
 
-
-
-        public void TakeMoney(Cashier cashier, int moneyGiven)
+        public void TakeMoney(int moneyGiven)
         {
             if (moneyGiven > 0)
             {
-                cashier.Balance += moneyGiven;
+                Balance += moneyGiven;
                 using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
                 {
-                    writer.WriteLine($"{DateTime.Now} FEED MONEY: ${moneyGiven} ${cashier.Balance} ");
+                    writer.WriteLine($"{DateTime.Now} FEED MONEY: ${moneyGiven} ${Balance} ");
                 }
             }
             else if (moneyGiven == 0)
             {
-                Console.Clear();
+                Console.WriteLine("Going back to purchase menu...");
+                Thread.Sleep(1000);
             }
             else
             {
                 Console.WriteLine("Please enter in a valid whole dollar amount");
-                Console.ReadKey();
+                Thread.Sleep(1000);
             }
         }
-        public void Transaction(decimal price, string codeInput)
+        public bool Transaction(decimal price, string codeInput)
         {
             if (Balance >= price)
             {
                 Balance -= price;
+                return true;
                 //VendingMachine vendingMachine = new VendingMachine();
                 //vendingMachine.Dispense(codeInput);
             }
             else
             {
                 Console.WriteLine("This item costs more than the current balance. Please insert more bills.");
-                Console.ReadKey();
+                Thread.Sleep(1000);
+                return false;
             }
         }
         public void EndTransaction()
         {
             decimal total = Balance;
-            int quarters =0;
-            int nickels =0;
-            int dimes =0;
+            string change = GetChange();
+            string[] splitForChange = change.Split(" ");
+
+
+            Console.WriteLine($"Transaction Complete, your change is: {total} \n Quarters: {splitForChange[0]} \n Dimes: {splitForChange[1]} \n Nickels: {splitForChange[2]}");
+
+            using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
+            {
+                writer.WriteLine($"{DateTime.Now} GIVE CHANGE: ${total} ${Balance} ");
+            }
+        }
+        public string GetChange()
+        {
+            string result = "";
+            int quarters = 0;
+            int dimes = 0;
+            int nickels = 0;
 
             while (Balance >= .25M)
             {
@@ -67,12 +84,9 @@ namespace Capstone
                 nickels++;
             }
 
-            Console.WriteLine($"Transaction Complete, your change is: {total} \n Quarters: {quarters} \n Dimes: {dimes} \n Nickels: {nickels}");
+            result = $"{quarters} {dimes} {nickels}";
 
-            using (StreamWriter writer = new StreamWriter("../../../../Log.txt", true))
-            {
-                writer.WriteLine($"{DateTime.Now} GIVE CHANGE: ${total} ${Balance} ");
-            }
+            return result;
         }
     }
 }
