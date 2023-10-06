@@ -75,7 +75,7 @@ namespace Capstone
                                     DisplayItems();
                                     Console.WriteLine();
                                     Console.WriteLine("Please enter a code to select an item");
-                                    string codeInput = Console.ReadLine();
+                                    string codeInput = Console.ReadLine().ToUpper();
                                     bool itemIsFound = false;
                                     int selectedItemCount = 0;
                                     string selectedItemName = "";
