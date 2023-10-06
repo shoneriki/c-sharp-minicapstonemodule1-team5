@@ -35,8 +35,8 @@ namespace Capstone
             if (Balance >= price)
             {
                 Balance -= price;
-                VendingMachine vendingMachine = new VendingMachine();
-                vendingMachine.Dispense(codeInput);
+                //VendingMachine vendingMachine = new VendingMachine();
+                //vendingMachine.Dispense(codeInput);
             }
             else
             {

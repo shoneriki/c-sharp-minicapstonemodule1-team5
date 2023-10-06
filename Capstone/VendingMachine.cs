@@ -15,7 +15,7 @@ namespace Capstone
 {
     public class VendingMachine
     {
-        public List<Plushy> Inv { get { return Inventory.SetInventory(); } private set { } }
+        public List<Plushy> Inv { get; private set; } = Inventory.SetInventory();
 
         public void Run()
         {
@@ -85,6 +85,7 @@ namespace Capstone
                             else
                             {
                                 cashier.Transaction(selectedItemPrice, codeInput);
+                                Dispense(codeInput);
                                 LogPurchase(cashier.Balance, codeInput, selectedItemName, selectedItemPrice);
                                 Console.WriteLine();
                                 Console.WriteLine("Press any key to continue...");
@@ -133,7 +134,9 @@ namespace Capstone
                 if (codeInput == Inv[i].Location)
                 {
                     Console.WriteLine($"{Inv[i].DisplayMessage}");
+                    Console.WriteLine(Inv[i].Count);
                     Inv[i].Count--;
+                    Console.WriteLine(Inv[i].Count);
                 }
             }
         }
